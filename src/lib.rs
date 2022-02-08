@@ -58,14 +58,19 @@ impl Universe {
         self.height
     }
 
+    /// Resets all cells to the dead state.
+    pub fn clear(&mut self) {
+        for i in 0..(self.width * self.height) as usize {
+            self.cells.set(i, false);
+        };
+    }
+
     /// Set the width of the universe.
     ///
     /// Resets all cells to the dead state.
     pub fn set_width(&mut self, width: u32) {
         self.width = width;
-        for i in 0..(width * self.height) as usize {
-            self.cells.set(i, false);
-        };
+        self.clear();
     }
 
     /// Set the height of the universe.
@@ -73,9 +78,7 @@ impl Universe {
     /// Resets all cells to the dead state.
     pub fn set_height(&mut self, height: u32) {
         self.height = height;
-        for i in 0..(self.width * height) as usize {
-            self.cells.set(i, false);
-        };
+        self.clear();
     }
 
     pub fn cells(&self) -> *const u32 {
@@ -140,6 +143,11 @@ impl Universe {
         }
 
         self.cells = next;
+    }
+
+    pub fn toggle_cell(&mut self, row: u32, column: u32) {
+        let idx = self.get_index(row, column);
+        self.cells.toggle(idx);
     }
 }
 
